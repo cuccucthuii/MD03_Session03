@@ -1,6 +1,7 @@
 package com.example.session03.repository;
 
-import com.example.session03.model.Enrollment;
+import com.example.session03.model.dto.EnrollCourseRequest;
+import com.example.session03.model.entity.Enrollment;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -52,6 +53,15 @@ public class EnrollmentRepository {
         if (enrollment != null) {
             enrollmentList.remove(enrollment);
         }
+        return enrollment;
+    }
+
+    public Enrollment createEnrollCourseRequest(EnrollCourseRequest request) {
+        Enrollment enrollment = new Enrollment();
+        enrollment.setEnrollmentId(request.getId());
+        enrollment.setCourseId(request.getCourseId());
+        enrollment.setStudentName(request.getStudentName());
+        enrollmentList.add(enrollment);
         return enrollment;
     }
 }

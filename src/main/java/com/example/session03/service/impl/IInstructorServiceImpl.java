@@ -1,6 +1,6 @@
 package com.example.session03.service.impl;
 
-import com.example.session03.model.Instructor;
+import com.example.session03.model.entity.Instructor;
 import com.example.session03.repository.InstructorRepository;
 import com.example.session03.service.IInstructorService;
 import org.springframework.beans.factory.annotation.Autowired;

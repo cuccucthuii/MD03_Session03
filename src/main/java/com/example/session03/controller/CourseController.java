@@ -1,6 +1,6 @@
 package com.example.session03.controller;
 
-import com.example.session03.model.Course;
+import com.example.session03.model.entity.Course;
 import com.example.session03.service.ICourseService;
 import com.example.session03.until.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;

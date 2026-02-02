@@ -1,4 +1,4 @@
-package com.example.session03.model;
+package com.example.session03.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

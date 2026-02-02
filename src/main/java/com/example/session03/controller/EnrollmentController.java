@@ -1,6 +1,10 @@
 package com.example.session03.controller;
 
-import com.example.session03.model.Enrollment;
+import com.example.session03.exception.CourseNotActiveException;
+import com.example.session03.exception.CourseNotFoundException;
+import com.example.session03.model.dto.EnrollCourseRequest;
+import com.example.session03.model.dto.EnrollmentDetail;
+import com.example.session03.model.entity.Enrollment;
 import com.example.session03.service.IEnrollmentService;
 import com.example.session03.until.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +77,24 @@ public class EnrollmentController {
         }catch (RuntimeException e) {
             ApiResponse<Enrollment> response = new ApiResponse<>(false, "Enrollment Not Found", null);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 ID NOT FOUND
+        }
+    }
+
+    @PostMapping("/enroll-course")
+    public ResponseEntity<ApiResponse<EnrollmentDetail>> createEnrollmentDetail(@RequestBody EnrollCourseRequest request) {
+        try {
+            EnrollmentDetail enrollment = enrollmentService.createEnrollmentDetail(request);
+            ApiResponse<EnrollmentDetail> response = new ApiResponse<>(true, "Enrollment Detail Created", enrollment);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (CourseNotFoundException ex) {
+            ApiResponse<EnrollmentDetail> response = new ApiResponse<>(false, "Course Not Found", null);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404
+        }catch (CourseNotActiveException ex){
+            ApiResponse<EnrollmentDetail> response = new ApiResponse<>(false, "Course Not Active", null);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); // 404
+        }catch (RuntimeException e){
+            ApiResponse<EnrollmentDetail> responseFalse = new ApiResponse<>(false, "Enrollment Not Found", null);
+            return new ResponseEntity<>(responseFalse, HttpStatus.BAD_REQUEST); //400
         }
     }
 }

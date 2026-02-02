@@ -1,6 +1,6 @@
 package com.example.session03.service;
 
-import com.example.session03.model.Course;
+import com.example.session03.model.entity.Course;
 
 import java.util.List;
 

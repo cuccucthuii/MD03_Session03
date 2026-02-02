@@ -1,6 +1,7 @@
 package com.example.session03.repository;
 
-import com.example.session03.model.Course;
+import com.example.session03.exception.CourseNotFoundException;
+import com.example.session03.model.entity.Course;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class CourseRepository {
         Course course = list.stream()
                 .filter(c -> c.getCourseId() == id)
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Course Not Found"));
+                .orElseThrow(() -> new CourseNotFoundException("Course Not Found"));
         return Optional.of(course); // Đảm bảo value không null
     }
 

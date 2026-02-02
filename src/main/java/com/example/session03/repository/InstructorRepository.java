@@ -1,6 +1,6 @@
 package com.example.session03.repository;
 
-import com.example.session03.model.Instructor;
+import com.example.session03.model.entity.Instructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
