@@ -1,5 +1,6 @@
 package com.example.session03.controller;
 
+import com.example.session03.model.dto.InstructorCreateRequest;
 import com.example.session03.model.entity.Instructor;
 import com.example.session03.service.IInstructorService;
 import com.example.session03.until.ApiResponse;
@@ -72,5 +73,18 @@ public class InstructorController {
             return new ResponseEntity<>(falseResponse, HttpStatus.NOT_FOUND); //404
         }
 
+    }
+
+    // API DTO SESSION 04
+    @PostMapping("/dto")
+    public ResponseEntity<ApiResponse<Instructor>> createInstructor(@RequestBody InstructorCreateRequest request) {
+        try {
+            Instructor instructor = instructorService.createInstructorDTO(request);
+            ApiResponse<Instructor> response = new ApiResponse<>(true, "Instructor Created", instructor);
+            return new ResponseEntity<>(response, HttpStatus.CREATED); //201
+        } catch (RuntimeException e) {
+            ApiResponse<Instructor> falseResponse = new ApiResponse<>(false, "Instructor Not Found", null);
+            return new ResponseEntity<>(falseResponse, HttpStatus.BAD_REQUEST); // 400
+        }
     }
 }

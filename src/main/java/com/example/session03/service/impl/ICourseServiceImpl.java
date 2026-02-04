@@ -1,7 +1,12 @@
 package com.example.session03.service.impl;
 
+import com.example.session03.model.dto.CourseCreateRequest;
+import com.example.session03.model.dto.CourseResponse;
+import com.example.session03.model.dto.CourseUpdateRequest;
 import com.example.session03.model.entity.Course;
+import com.example.session03.model.entity.Instructor;
 import com.example.session03.repository.CourseRepository;
+import com.example.session03.repository.InstructorRepository;
 import com.example.session03.service.ICourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,43 +18,54 @@ public class ICourseServiceImpl implements ICourseService {
     @Autowired
     private CourseRepository courseRepository;
 
+    @Autowired
+    private InstructorRepository instructorRepository;
+
     @Override
-    public List<Course> findAllCourses() {
-        return courseRepository.findAllCourses();
+    public List<CourseResponse> findAllCourses() {
+       return courseRepository.findAll()
+               .stream().map(course -> new CourseResponse(
+                       course.getCourseId(),
+                       course.getCourseTitle(),
+                       course.getCourseStatus()
+               )).toList();
     }
 
     @Override
     public Course findCourseById(Integer id) {
-        return courseRepository.findCourseById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
+        return courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
     }
 
     @Override
-    public Course createCourse(Course request) {
+    public Course createCourse(CourseCreateRequest request) {
+
+        Instructor instructor = instructorRepository.findById(request.getInstructorId())
+                .orElseThrow(() -> new RuntimeException("Instructor Not Found"));
+
         Course course = new Course();
-        course.setCourseId(request.getCourseId());
         course.setCourseTitle(request.getCourseTitle());
         course.setCourseStatus(request.getCourseStatus());
-        course.setInstructorId(request.getInstructorId());
-        return courseRepository.createCourse(course);
+        course.setInstructorId(instructor);
+        return courseRepository.save(course);
     }
 
     @Override
-    public Course updateCourse(Course request, int id) {
-        Course course = courseRepository.findCourseById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
-        if (course == null) {
-            return null;
-        }
+    public Course updateCourse(CourseUpdateRequest request, int id) {
+        Course course = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
+
+        Instructor instructor = instructorRepository.findById(request.getInstructorId())
+                .orElseThrow(() -> new RuntimeException("Instructor Not Found"));
         course.setCourseTitle(request.getCourseTitle());
         course.setCourseStatus(request.getCourseStatus());
-        course.setInstructorId(request.getInstructorId());
-        return courseRepository.updateCourse(course, id);
+        course.setInstructorId(instructor);
+        return courseRepository.save(course);
     }
 
     @Override
     public Course deleteCourse(Integer id) {
-        Course course = courseRepository.findCourseById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
+        Course course = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
         if (course != null) {
-            courseRepository.deleteCourse(id);
+            courseRepository.delete(course);
         }
         return course;
     }

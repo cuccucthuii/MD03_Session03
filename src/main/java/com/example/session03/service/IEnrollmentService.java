@@ -2,20 +2,20 @@ package com.example.session03.service;
 
 import com.example.session03.model.dto.EnrollCourseRequest;
 import com.example.session03.model.dto.EnrollmentDetail;
-import com.example.session03.model.entity.Enrollment;
+import com.example.session03.model.entity.StudentEnrollment;
 
 import java.util.List;
 
 public interface IEnrollmentService {
-    List<Enrollment> findAllEnrollment();
+    List<StudentEnrollment> findAllEnrollment();
 
-    Enrollment findEnrollmentById(Integer id);
+    StudentEnrollment findEnrollmentById(Integer id);
 
-    Enrollment createEnrollment(Enrollment request);
+    StudentEnrollment createEnrollment(StudentEnrollment request);
 
-    Enrollment updateEnrollment(Enrollment request, Integer id);
+    StudentEnrollment updateEnrollment(StudentEnrollment request, Integer id);
 
-    Enrollment deleteEnrollment(Integer id);
+    StudentEnrollment deleteEnrollment(Integer id);
 
     EnrollmentDetail createEnrollmentDetail(EnrollCourseRequest request);
 }

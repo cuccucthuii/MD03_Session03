@@ -1,5 +1,6 @@
 package com.example.session03.service;
 
+import com.example.session03.model.dto.InstructorCreateRequest;
 import com.example.session03.model.entity.Instructor;
 
 import java.util.List;
@@ -14,4 +15,7 @@ public interface IInstructorService {
     Instructor updateInstructor(Instructor request, int id);
 
     Instructor deleteInstructor(Integer id);
+
+    //API POST DTO
+    Instructor createInstructorDTO(InstructorCreateRequest request);
 }

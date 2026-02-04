@@ -1,5 +1,6 @@
 package com.example.session03.service.impl;
 
+import com.example.session03.model.dto.InstructorCreateRequest;
 import com.example.session03.model.entity.Instructor;
 import com.example.session03.repository.InstructorRepository;
 import com.example.session03.service.IInstructorService;
@@ -16,12 +17,12 @@ public class IInstructorServiceImpl implements IInstructorService {
 
     @Override
     public List<Instructor> findAllInstructors() {
-        return instructorRepository.findAllInstructors();
+        return instructorRepository.findAll();
     }
 
     @Override
     public Instructor findInstructorById(Integer id) {
-        return instructorRepository.findInstructorById(id).orElseThrow(() -> new RuntimeException("Instructor Not Found"));
+        return instructorRepository.findById(id).orElseThrow(() -> new RuntimeException("Instructor Not Found"));
     }
 
     @Override
@@ -30,26 +31,35 @@ public class IInstructorServiceImpl implements IInstructorService {
         instructor.setInstructorId(request.getInstructorId());
         instructor.setInstructorName(request.getInstructorName());
         instructor.setInstructorEmail(request.getInstructorEmail());
-        return instructorRepository.createInstructor(instructor);
+        return instructorRepository.save(instructor);
     }
 
     @Override
     public Instructor updateInstructor(Instructor request, int id) {
-        Instructor instructor = instructorRepository.findInstructorById(id).orElseThrow(() -> new RuntimeException("Instructor Not Found"));
+        Instructor instructor = instructorRepository.findById(id).orElseThrow(() -> new RuntimeException("Instructor Not Found"));
         if (instructor == null) {
             return null;
         }
         instructor.setInstructorName(request.getInstructorName());
         instructor.setInstructorEmail(request.getInstructorEmail());
-        return instructorRepository.updateInstructor(id, instructor);
+        return instructorRepository.save(instructor);
     }
 
     @Override
     public Instructor deleteInstructor(Integer id) {
-        Instructor instructor = instructorRepository.findInstructorById(id).orElseThrow(() -> new RuntimeException("Instructor Not Found"));
-        if (instructor == null) {
-            return null;
+        Instructor instructor = instructorRepository.findById(id).orElseThrow(() -> new RuntimeException("Instructor Not Found"));
+        if (instructor != null) {
+        instructorRepository.delete(instructor);
         }
-        return instructorRepository.deleteInstructor(id);
+        return instructor;
+    }
+
+    @Override
+    public Instructor createInstructorDTO(InstructorCreateRequest request) {
+        Instructor instructor = new Instructor();
+        instructor.setInstructorName(request.getInstructorName());
+        instructor.setInstructorEmail(request.getInstructorEmail());
+        instructorRepository.save(instructor);
+        return instructor;
     }
 }

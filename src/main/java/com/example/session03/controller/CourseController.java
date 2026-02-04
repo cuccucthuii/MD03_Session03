@@ -1,5 +1,8 @@
 package com.example.session03.controller;
 
+import com.example.session03.model.dto.CourseCreateRequest;
+import com.example.session03.model.dto.CourseResponse;
+import com.example.session03.model.dto.CourseUpdateRequest;
 import com.example.session03.model.entity.Course;
 import com.example.session03.service.ICourseService;
 import com.example.session03.until.ApiResponse;
@@ -17,10 +20,10 @@ public class CourseController {
     private ICourseService courseService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Course>>> getAllCourses() {
-        List<Course> courses = courseService.findAllCourses();
+    public ResponseEntity<ApiResponse<List<CourseResponse>>> getAllCourses() {
+        List<CourseResponse> courses = courseService.findAllCourses();
         // Wrapper the course data in the API Response
-        ApiResponse<List<Course>> response = new ApiResponse<>(true, "Find All Course Data Successful", courses);
+        ApiResponse<List<CourseResponse>> response = new ApiResponse<>(true, "Find All Course Data Successful", courses);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -37,7 +40,7 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Course>> createCourse(@RequestBody Course request) {
+    public ResponseEntity<ApiResponse<Course>> createCourse(@RequestBody CourseCreateRequest request) {
         try {
             Course course = courseService.createCourse(request);
             ApiResponse<Course> response = new ApiResponse<>(true, "Course Created", course);
@@ -49,10 +52,9 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Course>> updateCourse(@RequestBody Course request, @PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<Course>> updateCourse(@RequestBody CourseUpdateRequest request, @PathVariable Integer id) {
         try {
-            Course course = courseService.findCourseById(id);
-            course = courseService.updateCourse(request, id);
+            Course course = courseService.updateCourse(request, id);
             ApiResponse<Course> response = new ApiResponse<>(true, "Course Updated", course);
             return new ResponseEntity<>(response, HttpStatus.OK); // 200 Update successful
         } catch (RuntimeException e) {

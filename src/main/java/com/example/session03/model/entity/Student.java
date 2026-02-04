@@ -1,5 +1,6 @@
 package com.example.session03.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,17 +14,18 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "instructors")
-public class Instructor {
+@Table(name = "students")
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer instructorId;
-    @Column(nullable = false, length = 100)
-    private String instructorName;
+    private Integer id;
+    @Column(nullable = false)
+    private String name;
     @Column(nullable = false, unique = true)
-    private String instructorEmail;
+    private String email;
 
     // Join
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "instructorId") // tham chieu den ten cua Join trong Course
-    private List<Course> courses;
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student") // private Student student;
+    private List<StudentEnrollment> enrollments;
 }

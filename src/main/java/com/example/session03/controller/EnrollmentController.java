@@ -4,7 +4,7 @@ import com.example.session03.exception.CourseNotActiveException;
 import com.example.session03.exception.CourseNotFoundException;
 import com.example.session03.model.dto.EnrollCourseRequest;
 import com.example.session03.model.dto.EnrollmentDetail;
-import com.example.session03.model.entity.Enrollment;
+import com.example.session03.model.entity.StudentEnrollment;
 import com.example.session03.service.IEnrollmentService;
 import com.example.session03.until.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +21,20 @@ public class EnrollmentController {
     private IEnrollmentService enrollmentService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Enrollment>>> getAllEnrollment() {
-        List<Enrollment> enrollments = enrollmentService.findAllEnrollment();
-        ApiResponse<List<Enrollment>> response = new ApiResponse<>(true, "Find All Enrollment Data", enrollments);
+    public ResponseEntity<ApiResponse<List<StudentEnrollment>>> getAllEnrollment() {
+        List<StudentEnrollment> enrollments = enrollmentService.findAllEnrollment();
+        ApiResponse<List<StudentEnrollment>> response = new ApiResponse<>(true, "Find All Enrollment Data", enrollments);
         return new ResponseEntity<>(response, HttpStatus.OK); // 200 / if null = [] not error
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Enrollment>> getEnrollmentById(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<StudentEnrollment>> getEnrollmentById(@PathVariable Integer id) {
         try {
-            Enrollment enrollment = enrollmentService.findEnrollmentById(id);
-            ApiResponse<Enrollment> response = new ApiResponse<>(true, "Enrollment Found", enrollment);
+            StudentEnrollment enrollment = enrollmentService.findEnrollmentById(id);
+            ApiResponse<StudentEnrollment> response = new ApiResponse<>(true, "Enrollment Found", enrollment);
             return new ResponseEntity<>(response, HttpStatus.OK); // 200 successful
         } catch (RuntimeException e) {
-            ApiResponse<Enrollment> response = new ApiResponse<>(false, "Enrollment Not Found", null);
+            ApiResponse<StudentEnrollment> response = new ApiResponse<>(false, "Enrollment Not Found", null);
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404 not found
         }
         /**
@@ -43,39 +43,39 @@ public class EnrollmentController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Enrollment>> createEnrollment(@RequestBody Enrollment request) {
+    public ResponseEntity<ApiResponse<StudentEnrollment>> createEnrollment(@RequestBody StudentEnrollment request) {
         try {
-            Enrollment enrollment = enrollmentService.createEnrollment(request);
-            ApiResponse<Enrollment> response = new ApiResponse<>(true, "Enrollment Created", enrollment);
+            StudentEnrollment enrollment = enrollmentService.createEnrollment(request);
+            ApiResponse<StudentEnrollment> response = new ApiResponse<>(true, "Enrollment Created", enrollment);
             return new ResponseEntity<>(response, HttpStatus.CREATED); // 201 Create successful
         }catch  (RuntimeException e) {
-            ApiResponse<Enrollment> response = new ApiResponse<>(false, "Enrollment Not Found", null);
+            ApiResponse<StudentEnrollment> response = new ApiResponse<>(false, "Enrollment Not Found", null);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); // 400 Valid data
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Enrollment>> updateEnrollment(@PathVariable Integer id, @RequestBody Enrollment request) {
+    public ResponseEntity<ApiResponse<StudentEnrollment>> updateEnrollment(@PathVariable Integer id, @RequestBody StudentEnrollment request) {
         try {
-            Enrollment enrollment = enrollmentService.findEnrollmentById(id);
+            StudentEnrollment enrollment = enrollmentService.findEnrollmentById(id);
             enrollment = enrollmentService.updateEnrollment(request, id);
-            ApiResponse<Enrollment> response = new ApiResponse<>(true, "Enrollment Updated", enrollment);
+            ApiResponse<StudentEnrollment> response = new ApiResponse<>(true, "Enrollment Updated", enrollment);
             return new ResponseEntity<>(response, HttpStatus.OK); // 200
         }catch (RuntimeException e) {
-            ApiResponse<Enrollment> response = new ApiResponse<>(false, "Enrollment Not Found", null);
+            ApiResponse<StudentEnrollment> response = new ApiResponse<>(false, "Enrollment Not Found", null);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 ID NOT FOUND
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Enrollment>> deleteEnrollment(@PathVariable Integer id) {
+    public ResponseEntity<ApiResponse<StudentEnrollment>> deleteEnrollment(@PathVariable Integer id) {
         try {
-            Enrollment enrollment = enrollmentService.findEnrollmentById(id);
+            StudentEnrollment enrollment = enrollmentService.findEnrollmentById(id);
             enrollment = enrollmentService.deleteEnrollment(id);
-            ApiResponse<Enrollment> response = new ApiResponse<>(true, "Enrollment Deleted", enrollment);
+            ApiResponse<StudentEnrollment> response = new ApiResponse<>(true, "Enrollment Deleted", enrollment);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch (RuntimeException e) {
-            ApiResponse<Enrollment> response = new ApiResponse<>(false, "Enrollment Not Found", null);
+            ApiResponse<StudentEnrollment> response = new ApiResponse<>(false, "Enrollment Not Found", null);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 ID NOT FOUND
         }
     }
