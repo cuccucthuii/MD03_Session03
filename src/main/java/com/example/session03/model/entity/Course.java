@@ -29,9 +29,8 @@ public class Course {
     // Join column
     @ManyToOne(fetch = FetchType.LAZY) // Chi goi khi can
     @JoinColumn(name = "instructor_id") // Tham chieu den ID Instructor
-    private Instructor instructorId;
+    private Instructor instructor;
 
-    @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "course") // private Course course;
     private List<StudentEnrollment> enrollments;
 }

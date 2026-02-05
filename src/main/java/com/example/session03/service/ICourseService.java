@@ -10,11 +10,11 @@ import java.util.List;
 public interface ICourseService {
     List<CourseResponse> findAllCourses();
 
-    Course findCourseById(Integer id);
+    CourseResponse findCourseById(Integer id);
 
-    Course createCourse(CourseCreateRequest request);
+    CourseResponse createCourse(CourseCreateRequest request);
 
-    Course updateCourse(CourseUpdateRequest request, int id);
+    CourseResponse updateCourse(CourseUpdateRequest request, int id);
 
-    Course deleteCourse(Integer id);
+    void deleteCourse(Integer id);
 }

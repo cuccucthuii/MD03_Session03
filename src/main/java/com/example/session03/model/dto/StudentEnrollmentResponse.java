@@ -1,6 +1,8 @@
 package com.example.session03.model.dto;
 
-import com.example.session03.until.CourseStatus;
+import com.example.session03.model.entity.Course;
+import com.example.session03.model.entity.Student;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +12,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseResponse {
+public class StudentEnrollmentResponse {
+    private Integer enrollmentId;
     private Integer courseId;
     private String courseTitle;
-    private CourseStatus courseStatus;
-    private String instructorName;
+    private Integer id;
+    private String name;
 }

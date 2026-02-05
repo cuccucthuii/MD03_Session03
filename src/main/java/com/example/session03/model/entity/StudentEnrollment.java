@@ -20,12 +20,10 @@ public class StudentEnrollment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer enrollmentId;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id") // trỏ tới @Id bên Class Course
     private Course course;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id") // trỏ tới @Id bên Class Student (student.id)
     private Student student;

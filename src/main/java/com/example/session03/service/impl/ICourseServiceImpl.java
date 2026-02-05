@@ -27,17 +27,25 @@ public class ICourseServiceImpl implements ICourseService {
                .stream().map(course -> new CourseResponse(
                        course.getCourseId(),
                        course.getCourseTitle(),
-                       course.getCourseStatus()
+                       course.getCourseStatus(),
+                       course.getInstructor().getInstructorName()
                )).toList();
     }
 
     @Override
-    public Course findCourseById(Integer id) {
-        return courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
+    public CourseResponse findCourseById(Integer id) {
+        return courseRepository.findById(id).map(
+                c -> new CourseResponse(
+                        c.getCourseId(),
+                        c.getCourseTitle(),
+                        c.getCourseStatus(),
+                        c.getInstructor().getInstructorName()
+                )
+        ).orElseThrow(() -> new RuntimeException("Course Not Found"));
     }
 
     @Override
-    public Course createCourse(CourseCreateRequest request) {
+    public CourseResponse createCourse(CourseCreateRequest request) {
 
         Instructor instructor = instructorRepository.findById(request.getInstructorId())
                 .orElseThrow(() -> new RuntimeException("Instructor Not Found"));
@@ -45,28 +53,30 @@ public class ICourseServiceImpl implements ICourseService {
         Course course = new Course();
         course.setCourseTitle(request.getCourseTitle());
         course.setCourseStatus(request.getCourseStatus());
-        course.setInstructorId(instructor);
-        return courseRepository.save(course);
+        course.setInstructor(instructor);
+        courseRepository.save(course);
+        return new CourseResponse(course.getCourseId(), course.getCourseTitle(), course.getCourseStatus(), course.getInstructor().getInstructorName());
     }
 
     @Override
-    public Course updateCourse(CourseUpdateRequest request, int id) {
+    public CourseResponse updateCourse(CourseUpdateRequest request, int id) {
         Course course = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
 
         Instructor instructor = instructorRepository.findById(request.getInstructorId())
                 .orElseThrow(() -> new RuntimeException("Instructor Not Found"));
         course.setCourseTitle(request.getCourseTitle());
         course.setCourseStatus(request.getCourseStatus());
-        course.setInstructorId(instructor);
-        return courseRepository.save(course);
+        course.setInstructor(instructor);
+        courseRepository.save(course);
+        return new CourseResponse(course.getCourseId(), course.getCourseTitle(), course.getCourseStatus(), course.getInstructor().getInstructorName());
     }
 
     @Override
-    public Course deleteCourse(Integer id) {
+    public void deleteCourse(Integer id) {
         Course course = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course Not Found"));
-        if (course != null) {
-            courseRepository.delete(course);
+        if (course == null) {
+            throw new RuntimeException("Course Not Found");
         }
-        return course;
+            courseRepository.delete(course);
     }
 }

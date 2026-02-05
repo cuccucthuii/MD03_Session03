@@ -28,53 +28,29 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Course>> getCourseById(@PathVariable Integer id) {
-        try {
-            Course course = courseService.findCourseById(id);
-            ApiResponse<Course> response = new ApiResponse<>(true, "Find Course Data", course);
+    public ResponseEntity<ApiResponse<CourseResponse>> getCourseById(@PathVariable Integer id) {
+            CourseResponse course = courseService.findCourseById(id);
+            ApiResponse<CourseResponse> response = new ApiResponse<>(true, "Find Course Data", course);
             return new ResponseEntity<>(response, HttpStatus.OK); // 200 FIND successful
-        } catch (RuntimeException e) {
-            ApiResponse<Course> response = new ApiResponse<>(false, "Course Not Found", null);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404
-        } // Dùng try/ catch để bắt ngoại lệ runtime
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Course>> createCourse(@RequestBody CourseCreateRequest request) {
-        try {
-            Course course = courseService.createCourse(request);
-            ApiResponse<Course> response = new ApiResponse<>(true, "Course Created", course);
+    public ResponseEntity<ApiResponse<CourseResponse>> createCourse(@RequestBody CourseCreateRequest request) {
+            CourseResponse course = courseService.createCourse(request);
+            ApiResponse<CourseResponse> response = new ApiResponse<>(true, "Course Created", course);
             return new ResponseEntity<>(response, HttpStatus.CREATED); // 201 create successful
-        } catch (RuntimeException e) {
-            ApiResponse<Course> response = new ApiResponse<>(false, "Course Not Found", null);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); // 400 valid data
-        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Course>> updateCourse(@RequestBody CourseUpdateRequest request, @PathVariable Integer id) {
-        try {
-            Course course = courseService.updateCourse(request, id);
-            ApiResponse<Course> response = new ApiResponse<>(true, "Course Updated", course);
+    public ResponseEntity<ApiResponse<CourseResponse>> updateCourse(@RequestBody CourseUpdateRequest request, @PathVariable Integer id) {
+            CourseResponse course = courseService.updateCourse(request, id);
+            ApiResponse<CourseResponse> response = new ApiResponse<>(true, "Course Updated", course);
             return new ResponseEntity<>(response, HttpStatus.OK); // 200 Update successful
-        } catch (RuntimeException e) {
-            ApiResponse<Course> response = new ApiResponse<>(false, "Course Not Found", null);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404 ID NOT FOUND
-        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Course>> deleteCourse(@PathVariable Integer id) {
-        try {
-            Course course = courseService.findCourseById(id);
-            course = courseService.deleteCourse(id);
-            ApiResponse<Course> response = new ApiResponse<>(true, "Course Deleted", course);
-            return new ResponseEntity<>(response, HttpStatus.OK); // 200 DELETE SUCCESSFUL
+    public void deleteCourse(@PathVariable Integer id) {
+        courseService.deleteCourse(id);
 
-        } catch (RuntimeException e) {
-            ApiResponse<Course> response = new ApiResponse<>(false, "Course Not Found", null);
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404 NOT FOUND
         }
-    }
-
 }

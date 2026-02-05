@@ -24,6 +24,6 @@ public class Instructor {
     private String instructorEmail;
 
     // Join
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "instructorId") // tham chieu den ten cua Join trong Course
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "instructor") // tham chieu den ten cua Join trong Course
     private List<Course> courses;
 }

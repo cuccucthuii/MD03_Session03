@@ -24,8 +24,6 @@ public class Student {
     @Column(nullable = false, unique = true)
     private String email;
 
-    // Join
-    @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student") // private Student student;
     private List<StudentEnrollment> enrollments;
 }

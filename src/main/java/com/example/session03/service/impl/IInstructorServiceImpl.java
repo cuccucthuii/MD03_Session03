@@ -1,6 +1,8 @@
 package com.example.session03.service.impl;
 
+import com.example.session03.model.dto.CourseResponse;
 import com.example.session03.model.dto.InstructorCreateRequest;
+import com.example.session03.model.dto.InstructorResponse;
 import com.example.session03.model.entity.Instructor;
 import com.example.session03.repository.InstructorRepository;
 import com.example.session03.service.IInstructorService;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IInstructorServiceImpl implements IInstructorService {
@@ -16,13 +19,23 @@ public class IInstructorServiceImpl implements IInstructorService {
 
 
     @Override
-    public List<Instructor> findAllInstructors() {
-        return instructorRepository.findAll();
+    public List<InstructorResponse> findAllInstructors() {
+        return instructorRepository.findAll()
+                .stream().map(i -> new InstructorResponse(
+                        i.getInstructorId(),
+                        i.getInstructorName(),
+                        i.getInstructorEmail()
+                )).toList();
     }
 
     @Override
-    public Instructor findInstructorById(Integer id) {
-        return instructorRepository.findById(id).orElseThrow(() -> new RuntimeException("Instructor Not Found"));
+    public InstructorResponse findInstructorById(Integer id) {
+        return instructorRepository.findById(id)
+                .map(i -> new InstructorResponse(
+                        i.getInstructorId(),
+                        i.getInstructorName(),
+                        i.getInstructorEmail()
+                )).orElseThrow(() -> new RuntimeException("Instructor not found"));
     }
 
     @Override
@@ -55,11 +68,15 @@ public class IInstructorServiceImpl implements IInstructorService {
     }
 
     @Override
-    public Instructor createInstructorDTO(InstructorCreateRequest request) {
+    public InstructorResponse createInstructorDTO(InstructorCreateRequest request) {
         Instructor instructor = new Instructor();
         instructor.setInstructorName(request.getInstructorName());
         instructor.setInstructorEmail(request.getInstructorEmail());
         instructorRepository.save(instructor);
-        return instructor;
+        return new InstructorResponse(
+                instructor.getInstructorId(),
+                instructor.getInstructorName(),
+                instructor.getInstructorEmail()
+        );
     }
 }
